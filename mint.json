@@ -18,16 +18,6 @@
   "background": {
     "style": "windows"
   },
-  "topbarLinks": [
-    {
-      "name": "GitHub",
-      "url": "https://github.com/scriptscrypt/solana-agent-kit"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "/quickstart"
-  },
   "codeBlock": {
     "mode": "auto"
   },
@@ -71,11 +61,20 @@
         "v2-docs/interfaces/PumpFunTokenOptions",
         "v2-docs/interfaces/PumpfunLaunchResponse"
       ]
+    },
+    {
+      "group": "Guides",
+      "icon": "book-open",
+      "pages": [
+        "v2-docs/guides/add_your_own_tool",
+        "v2-docs/guides/setup_locally",
+        "v2-docs/guides/test_it_out"
+      ]
     }
   ],
   "footer": {
     "socials": {
-      "github": "https://github.com/scriptscrypt/solana-agent-kit"
+      "github": "https://github.com/yourusername/solana-agent-kit"
     }
   }
 }
