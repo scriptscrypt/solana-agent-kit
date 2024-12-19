@@ -6,58 +6,46 @@
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#0C8CE9",
-    "light": "#4DA8FF",
-    "dark": "#0761D1",
-    "anchors": {
-      "from": "#0C8CE9",
-      "to": "#4DA8FF"
-    }
+    "primary": "#0C8CE9"
   },
-  "topbarLinks": [
-    {
-      "name": "GitHub",
-      "url": "https://github.com/scriptscrypt/solana-agent-kit"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "/quickstart"
-  },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api"
-    }
-  ],
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["introduction", "quickstart"]
+      "pages": [
+        "introduction",
+        "setup_locally",
+        "test_it_out",
+        "add_your_own_tool"
+      ]
+    },
+    {
+      "group": "Classes",
+      "pages": ["classes/SolanaAgentKit"]
+    },
+    {
+      "group": "Functions",
+      "pages": ["functions/createSolanaTools"]
+    },
+    {
+      "group": "Interfaces",
+      "pages": [
+        "interfaces/CollectionDeployment",
+        "interfaces/CollectionOptions",
+        "interfaces/Creator",
+        "interfaces/FetchPriceResponse",
+        "interfaces/JupiterTokenData",
+        "interfaces/LuloAccountDetailsResponse",
+        "interfaces/MintCollectionNFTResponse",
+        "interfaces/PumpfunLaunchResponse",
+        "interfaces/PumpFunTokenOptions"
+      ]
     },
     {
       "group": "API Reference",
-      "pages": [
-        "api/modules",
-        {
-          "group": "Classes",
-          "pages": ["api/classes/SolanaAgent", "api/classes/TokenManager"]
-        },
-        {
-          "group": "Interfaces",
-          "pages": ["api/interfaces/index"]
-        }
-      ]
+      "pages": ["modules"]
     }
   ],
   "footerSocials": {
-    "github": "https://github.com/scriptscrypt/solana-agent-kit"
-  },
-  "modeToggle": {
-    "default": "dark"
-  },
-  "feedback": {
-    "suggestEdit": true,
-    "raiseIssue": true
+    "github": "https://github.com/yourusername/solana-agent-kit"
   }
 }

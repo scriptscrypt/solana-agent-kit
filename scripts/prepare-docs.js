@@ -1,58 +1,107 @@
 // scripts/prepare-docs.js
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-function processMarkdownFile(filePath) {
-  let content = fs.readFileSync(filePath, 'utf8');
-  
+function ensureDirectoryExistence(filePath) {
+  const dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
+}
+
+function scanDirectory(dir) {
+  const pages = [];
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (!["assets", ".nojekyll", "CNAME"].includes(entry.name)) {
+        const subPages = scanDirectory(fullPath);
+        if (subPages.length > 0) {
+          pages.push({
+            group: entry.name.charAt(0).toUpperCase() + entry.name.slice(1),
+            pages: subPages,
+          });
+        }
+      }
+    } else if (entry.name.endsWith(".html")) {
+      pages.push(fullPath.replace(".html", "").replace("docs/", ""));
+    } else if (entry.name.endsWith(".md")) {
+      pages.push(fullPath.replace(".md", "").replace("docs/", ""));
+    }
+  }
+
+  return pages;
+}
+
+function generateMintConfig() {
+  const pages = scanDirectory("./docs");
+
+  const config = {
+    name: "Solana Agent Kit",
+    logo: {
+      light: "/logo/light.png",
+      dark: "/logo/dark.png",
+    },
+    favicon: "/favicon.png",
+    colors: {
+      primary: "#0C8CE9",
+    },
+    navigation: pages,
+  };
+
+  fs.writeFileSync("mint.json", JSON.stringify(config, null, 2));
+}
+
+function processFile(sourcePath, targetPath) {
+  const content = fs.readFileSync(sourcePath, "utf8");
+  const filename = path.basename(sourcePath, path.extname(sourcePath));
+
   // Add frontmatter
-  const filename = path.basename(filePath, '.md');
-  let title = filename.charAt(0).toUpperCase() + filename.slice(1);
-  
-  // Clean up the title
-  title = title.replace(/([A-Z])/g, ' $1').trim(); // Add spaces before capital letters
-  
   const frontmatter = `---
-title: ${title}
-description: API documentation for ${title}
+title: '${filename}'
+description: 'Documentation for ${filename}'
 ---
 
 `;
 
-  // Improve code block formatting
-  content = content.replace(/```(typescript|javascript)/g, '```ts');
-  
-  // Ensure proper spacing around code blocks
-  content = content.replace(/```(\w+)\n/g, '```$1\n\n');
-  content = content.replace(/\n```\n/g, '\n\n```\n\n');
-  
-  // Improve method signature formatting
-  content = content.replace(
-    /(### \w+)\n\n(.*?)\(\)/g,
-    '$1\n\n```ts\n$2()\n```'
-  );
+  const processedContent = content
+    .replace(/\.html/g, "") // Remove .html extensions from links
+    .replace(/\.md/g, ""); // Remove .md extensions from links
 
-  // Add proper spacing around headings
-  content = content.replace(/\n(#{1,6} .*)\n/g, '\n\n$1\n\n');
-
-  return frontmatter + content;
+  ensureDirectoryExistence(targetPath);
+  fs.writeFileSync(targetPath, frontmatter + processedContent);
 }
 
-function processDocsDirectory(directory) {
-  const files = fs.readdirSync(directory);
-  
-  files.forEach(file => {
-    const filePath = path.join(directory, file);
-    const stat = fs.statSync(filePath);
-    
-    if (stat.isDirectory()) {
-      processDocsDirectory(filePath);
-    } else if (file.endsWith('.md')) {
-      const processedContent = processMarkdownFile(filePath);
-      fs.writeFileSync(filePath, processedContent);
+function processDocs(sourceDir, targetDir) {
+  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const sourcePath = path.join(sourceDir, entry.name);
+    const targetPath = path.join(
+      targetDir,
+      entry.name.replace(".html", ".mdx").replace(".md", ".mdx")
+    );
+
+    if (entry.isDirectory()) {
+      if (!["assets", ".nojekyll", "CNAME"].includes(entry.name)) {
+        processDocs(sourcePath, targetPath);
+      }
+    } else if (entry.name.endsWith(".html") || entry.name.endsWith(".md")) {
+      processFile(sourcePath, targetPath);
     }
-  });
+  }
 }
 
-// Process all markdown files in the docs directory
-processDocsDirectory('./docs');
+// Generate Mintlify config based on docs structure
+console.log("Generating Mintlify configuration...");
+generateMintConfig();
+
+// Process documentation files
+console.log("Processing documentation files...");
+processDocs("./docs", "./");
+
+console.log("Documentation processing complete!");
