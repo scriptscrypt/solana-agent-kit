@@ -13,39 +13,34 @@
       "group": "Getting Started",
       "pages": [
         "introduction",
-        "setup_locally",
-        "test_it_out",
-        "add_your_own_tool"
+        "quickstart"
       ]
     },
     {
       "group": "Classes",
-      "pages": ["classes/SolanaAgentKit"]
+      "pages": [
+        "api/classes/SolanaAgentKit"
+      ]
     },
     {
       "group": "Functions",
-      "pages": ["functions/createSolanaTools"]
+      "pages": [
+        "api/functions/createSolanaTools"
+      ]
     },
     {
       "group": "Interfaces",
       "pages": [
-        "interfaces/CollectionDeployment",
-        "interfaces/CollectionOptions",
-        "interfaces/Creator",
-        "interfaces/FetchPriceResponse",
-        "interfaces/JupiterTokenData",
-        "interfaces/LuloAccountDetailsResponse",
-        "interfaces/MintCollectionNFTResponse",
-        "interfaces/PumpfunLaunchResponse",
-        "interfaces/PumpFunTokenOptions"
+        "api/interfaces/CollectionDeployment",
+        "api/interfaces/CollectionOptions",
+        "api/interfaces/Creator",
+        "api/interfaces/FetchPriceResponse",
+        "api/interfaces/JupiterTokenData",
+        "api/interfaces/LuloAccountDetailsResponse",
+        "api/interfaces/MintCollectionNFTResponse",
+        "api/interfaces/PumpFunTokenOptions",
+        "api/interfaces/PumpfunLaunchResponse"
       ]
-    },
-    {
-      "group": "API Reference",
-      "pages": ["modules"]
     }
-  ],
-  "footerSocials": {
-    "github": "https://github.com/yourusername/solana-agent-kit"
-  }
+  ]
 }
