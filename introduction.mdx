@@ -1,0 +1,39 @@
+---
+title: 'Introduction'
+description: 'Welcome to the Solana Agent Kit documentation'
+---
+
+# Solana Agent Kit
+
+Solana Agent Kit is a powerful toolkit for interacting with the Solana blockchain using LangChain. It provides a seamless integration between language models and Solana blockchain operations.
+
+## Features
+
+- **LangChain Integration**: Built-in support for LangChain's powerful AI capabilities
+- **Solana Operations**: Easy-to-use interfaces for common Solana blockchain operations
+- **Token Management**: Comprehensive tools for SPL token operations
+- **Metadata Handling**: Built-in support for Metaplex metadata standards
+- **Name Service Integration**: Bonfida SPL name service support
+
+## Getting Started
+
+To start using Solana Agent Kit in your project:
+
+```bash
+npm install solana-agent-kit
+```
+
+## Quick Example
+
+```typescript
+import { SolanaAgent } from 'solana-agent-kit';
+
+const agent = new SolanaAgent({
+    // your configuration here
+});
+
+// Your first Solana operation
+const balance = await agent.getBalance('YOUR_ADDRESS');
+```
+
+For more detailed examples and use cases, check out our [Quickstart Guide](/quickstart).
