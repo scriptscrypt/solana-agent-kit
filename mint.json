@@ -26,7 +26,7 @@
   "topbarLinks": [
     {
       "name": "GitHub",
-      "url": "https://github.com/yourusername/solana-agent-kit"
+      "url": "https://github.com/scriptscrypt/solana-agent-kit"
     }
   ],
   "topbarCtaButton": {
@@ -51,19 +51,13 @@
     {
       "group": "API Reference",
       "pages": [
-        "api/modules",
-        "api/classes",
-        "api/functions",
-        "api/interfaces",
-        "guides/add_your_own_tool",
-        "guides/setup_locally",
-        "guides/test_it_out"
+        "api/modules"
       ]
     }
   ],
   "footer": {
     "socials": {
-      "github": "https://github.com/yourusername/solana-agent-kit"
+      "github": "https://github.com/scriptscrypt/solana-agent-kit"
     }
   }
 }

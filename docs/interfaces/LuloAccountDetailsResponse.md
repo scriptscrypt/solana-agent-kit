@@ -16,7 +16,7 @@ Lulo Account Details response format
 
 #### Defined in
 
-[types/index.ts:46](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L46)
+[types/index.ts:46](https://github.com/scriptscrypt/solana-agent-kit/blob/c204a183c819223cbc909398dd828ee65086f448/src/types/index.ts#L46)
 
 ***
 
@@ -26,7 +26,7 @@ Lulo Account Details response format
 
 #### Defined in
 
-[types/index.ts:47](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L47)
+[types/index.ts:47](https://github.com/scriptscrypt/solana-agent-kit/blob/c204a183c819223cbc909398dd828ee65086f448/src/types/index.ts#L47)
 
 ***
 
@@ -36,7 +36,7 @@ Lulo Account Details response format
 
 #### Defined in
 
-[types/index.ts:48](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L48)
+[types/index.ts:48](https://github.com/scriptscrypt/solana-agent-kit/blob/c204a183c819223cbc909398dd828ee65086f448/src/types/index.ts#L48)
 
 ***
 
@@ -62,4 +62,4 @@ Lulo Account Details response format
 
 #### Defined in
 
-[types/index.ts:49](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L49)
+[types/index.ts:49](https://github.com/scriptscrypt/solana-agent-kit/blob/c204a183c819223cbc909398dd828ee65086f448/src/types/index.ts#L49)
