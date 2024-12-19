@@ -19,27 +19,27 @@
     {
       "group": "Classes",
       "pages": [
-        "api/classes/SolanaAgentKit"
+        "classes/SolanaAgentKit"
       ]
     },
     {
       "group": "Functions",
       "pages": [
-        "api/functions/createSolanaTools"
+        "functions/createSolanaTools"
       ]
     },
     {
       "group": "Interfaces",
       "pages": [
-        "api/interfaces/CollectionDeployment",
-        "api/interfaces/CollectionOptions",
-        "api/interfaces/Creator",
-        "api/interfaces/FetchPriceResponse",
-        "api/interfaces/JupiterTokenData",
-        "api/interfaces/LuloAccountDetailsResponse",
-        "api/interfaces/MintCollectionNFTResponse",
-        "api/interfaces/PumpFunTokenOptions",
-        "api/interfaces/PumpfunLaunchResponse"
+        "interfaces/CollectionDeployment",
+        "interfaces/CollectionOptions",
+        "interfaces/Creator",
+        "interfaces/FetchPriceResponse",
+        "interfaces/JupiterTokenData",
+        "interfaces/LuloAccountDetailsResponse",
+        "interfaces/MintCollectionNFTResponse",
+        "interfaces/PumpFunTokenOptions",
+        "interfaces/PumpfunLaunchResponse"
       ]
     }
   ]
