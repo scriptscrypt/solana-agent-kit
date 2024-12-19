@@ -6,11 +6,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "docs": "typedoc src --out docs",
     "test": "ts-node test/index.ts",
     "generate": "ts-node src/utils/keypair.ts",
-    "dev": "mintlify dev",
-    "mintlify": "npm run docs && cp -r docs/* mint/api/"
+    "mintlify": "npm run docs && cp -r docs/* mint/api/",
+    "docs:generate": "typedoc --options typedoc.json",
+    "docs:prepare": "node scripts/prepare-docs.js",
+    "docs": "npm run docs:generate && npm run docs:prepare",
+    "dev": "mintlify dev"
   },
   "keywords": [],
   "author": "",

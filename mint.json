@@ -1,33 +1,41 @@
 {
-    "name": "Solana Agent Kit",
-    "logo": {
-      "light": "/logo/light.png",
-      "dark": "/logo/dark.png"
-    },
-    "favicon": "/favicon.png",
-    "colors": {
-      "primary": "#0D9373",
-      "light": "#07C983",
-      "dark": "#0D9373"
-    },
-    "topbarLinks": [
-      {
-        "name": "GitHub",
-        "url": "https://github.com/scriptscrypt/solana-agent-kit"
-      }
-    ],
-    "topbarCtaButton": {
-      "name": "Get Started",
+  "name": "Solana Agent Kit",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#4da6ff",
+    "light": "#66b3ff",
+    "dark": "#3399ff"
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
       "url": "https://github.com/scriptscrypt/solana-agent-kit"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "/quickstart"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "quickstart"]
     },
-    "navigation": [
-      {
-        "group": "Getting Started",
-        "pages": ["introduction", "quickstart"]
-      },
-      {
-        "group": "API Documentation",
-        "pages": ["api/index"]
-      }
-    ]
+    {
+      "group": "API Reference",
+      "pages": [
+        "api/index",
+        "api/classes/index",
+        "api/interfaces/index",
+        "api/modules"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/scriptscrypt/solana-agent-kit"
   }
+}
