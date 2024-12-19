@@ -3,7 +3,7 @@ name: Documentation
 on:
   push:
     branches:
-      - feat/docs-mintlify  # or your default branch
+      - feat/docs-mintlify
     paths:
       - 'src/**'
       - 'package.json'
@@ -22,19 +22,16 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
-        
+        run: |
+          npm install
+          npm install typedoc@0.27.1 typedoc-plugin-markdown@4.3.3 --save-dev
+          
       - name: Generate TypeDoc documentation
         run: npm run docs
-        
-      - name: Copy docs to Mintlify directory
-        run: |
-          mkdir -p mint/api
-          cp -r docs/* mint/api/
         
       - name: Commit and push if changed
         run: |
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions@github.com'
-          git add mint/api
+          git add .
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update API documentation" && git push)
