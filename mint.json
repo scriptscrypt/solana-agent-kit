@@ -15,11 +15,6 @@
     "light": "#14F195",
     "dark": "#9945FF"
   },
-  "api": {
-    "auth": {
-      "method": "bearer"
-    }
-  },
   "background": {
     "style": "windows"
   },
@@ -49,9 +44,32 @@
       ]
     },
     {
-      "group": "API Reference",
+      "group": "Classes",
+      "icon": "cube",
       "pages": [
-        "api/modules"
+        "v2-docs/classes/SolanaAgentKit"
+      ]
+    },
+    {
+      "group": "Functions",
+      "icon": "function",
+      "pages": [
+        "v2-docs/functions/createSolanaTools"
+      ]
+    },
+    {
+      "group": "Interfaces",
+      "icon": "brackets-curly",
+      "pages": [
+        "v2-docs/interfaces/CollectionDeployment",
+        "v2-docs/interfaces/CollectionOptions",
+        "v2-docs/interfaces/Creator",
+        "v2-docs/interfaces/FetchPriceResponse",
+        "v2-docs/interfaces/JupiterTokenData",
+        "v2-docs/interfaces/LuloAccountDetailsResponse",
+        "v2-docs/interfaces/MintCollectionNFTResponse",
+        "v2-docs/interfaces/PumpFunTokenOptions",
+        "v2-docs/interfaces/PumpfunLaunchResponse"
       ]
     }
   ],
