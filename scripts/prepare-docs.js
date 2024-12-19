@@ -23,23 +23,50 @@ description: "Documentation for ${filename}"
   fs.writeFileSync(targetPath, frontmatter + content);
 }
 
-function getNavigationForDirectory(dir) {
-  const pages = [];
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  
-  entries.forEach(entry => {
-    if (entry.isFile() && (entry.name.endsWith('.md') || entry.name.endsWith('.mdx'))) {
-      const baseName = entry.name.replace(/\.(md|mdx)$/, '');
-      const relativePath = path.relative('api', dir);
-      pages.push(relativePath ? `${relativePath}/${baseName}` : baseName);
+// Create the base mint.json structure
+const baseConfig = {
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Solana Agent Kit",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "layout": "sidenav",
+  "favicon": "/favicon.svg",
+  "sidebar": {
+    "items": "border"
+  },
+  "colors": {
+    "primary": "#9945FF",
+    "light": "#14F195",
+    "dark": "#9945FF"
+  },
+  "api": {
+    "auth": {
+      "method": "bearer"
     }
-  });
-  
-  return pages;
-}
-
-// Main execution
-console.log('Starting documentation processing...');
+  },
+  "background": {
+    "style": "windows"
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/scriptscrypt/solana-agent-kit"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "/quickstart"
+  },
+  "codeBlock": {
+    "mode": "auto"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
+  }
+};
 
 try {
   // Create api directory if it doesn't exist
@@ -51,34 +78,7 @@ try {
   const docsPath = './docs';
   const entries = fs.readdirSync(docsPath, { withFileTypes: true });
 
-  // Process each directory and file
-  entries.forEach(entry => {
-    const sourcePath = path.join(docsPath, entry.name);
-    
-    if (entry.isDirectory() && !['assets', '.nojekyll', 'CNAME'].includes(entry.name)) {
-      // Process directory
-      const targetDir = path.join('api', entry.name);
-      if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir, { recursive: true });
-      }
-
-      // Process files in the directory
-      const files = fs.readdirSync(sourcePath);
-      files.forEach(file => {
-        if (file.endsWith('.html')) {
-          const sourceFile = path.join(sourcePath, file);
-          const targetFile = path.join(targetDir, file.replace('.html', '.mdx'));
-          processFile(sourceFile, targetFile);
-        }
-      });
-    } else if (entry.name.endsWith('.html')) {
-      // Process root level files
-      const targetFile = path.join('api', entry.name.replace('.html', '.mdx'));
-      processFile(sourcePath, targetFile);
-    }
-  });
-
-  // Generate mint.json with navigation
+  // Initialize navigation
   const navigation = [
     {
       group: "Getting Started",
@@ -86,65 +86,59 @@ try {
     }
   ];
 
-  // Add Classes section if it exists
-  if (fs.existsSync('api/classes')) {
-    const classesPages = getNavigationForDirectory('api/classes');
-    if (classesPages.length > 0) {
-      navigation.push({
-        group: "Classes",
-        pages: classesPages
-      });
+  // Process API Reference section
+  const apiSection = {
+    group: "API Reference",
+    pages: ["api/modules"]
+  };
+
+  // Process each category
+  const categories = {
+    'classes': { icon: 'cube' },
+    'functions': { icon: 'function' },
+    'interfaces': { icon: 'brackets-curly' }
+  };
+
+  Object.entries(categories).forEach(([category, config]) => {
+    const categoryDir = path.join(docsPath, category);
+    if (fs.existsSync(categoryDir)) {
+      const files = fs.readdirSync(categoryDir)
+        .filter(file => file.endsWith('.html'))
+        .map(file => file.replace('.html', ''));
+
+      if (files.length > 0) {
+        // Process each file
+        files.forEach(file => {
+          const sourcePath = path.join(categoryDir, `${file}.html`);
+          const targetPath = path.join('api', category, `${file}.mdx`);
+          processFile(sourcePath, targetPath);
+        });
+
+        // Add to navigation
+        apiSection.pages.push({
+          group: category.charAt(0).toUpperCase() + category.slice(1),
+          icon: config.icon,
+          pages: files.map(file => `api/${category}/${file}`)
+        });
+      }
     }
-  }
+  });
 
-  // Add Functions section if it exists
-  if (fs.existsSync('api/functions')) {
-    const functionsPages = getNavigationForDirectory('api/functions');
-    if (functionsPages.length > 0) {
-      navigation.push({
-        group: "Functions",
-        pages: functionsPages
-      });
-    }
-  }
+  navigation.push(apiSection);
 
-  // Add Interfaces section if it exists
-  if (fs.existsSync('api/interfaces')) {
-    const interfacesPages = getNavigationForDirectory('api/interfaces');
-    if (interfacesPages.length > 0) {
-      navigation.push({
-        group: "Interfaces",
-        pages: interfacesPages
-      });
-    }
-  }
-
-  // Add root level API docs if they exist
-  const rootApiPages = getNavigationForDirectory('api')
-    .filter(page => !page.includes('/'));
-  if (rootApiPages.length > 0) {
-    navigation.push({
-      group: "API Reference",
-      pages: rootApiPages
-    });
-  }
-
+  // Create final config
   const mintConfig = {
-    name: "Solana Agent Kit",
-    logo: {
-      light: "/logo/light.png",
-      dark: "/logo/dark.png"
-    },
-    favicon: "/favicon.png",
-    colors: {
-      primary: "#0C8CE9"
-    },
-    navigation
+    ...baseConfig,
+    navigation,
+    footer: {
+      socials: {
+        github: "https://github.com/scriptscrypt/solana-agent-kit"
+      }
+    }
   };
 
   fs.writeFileSync('mint.json', JSON.stringify(mintConfig, null, 2));
-  console.log('Generated mint.json with navigation:', JSON.stringify(navigation, null, 2));
-
+  console.log('Documentation processing complete!');
 } catch (error) {
   console.error('Error processing documentation:', error);
   process.exit(1);

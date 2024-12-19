@@ -6,3 +6,9 @@ node_modules
 .vscode
 
 .DS_Store
+
+
+# Keep documentation
+!api/
+!docs/
+!mint.json

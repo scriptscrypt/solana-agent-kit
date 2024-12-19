@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/index.ts:27](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L27)
+[types/index.ts:27](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L27)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types/index.ts:28](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L28)
+[types/index.ts:28](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L28)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[types/index.ts:29](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L29)
+[types/index.ts:29](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L29)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[types/index.ts:30](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L30)
+[types/index.ts:30](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L30)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[types/index.ts:31](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L31)
+[types/index.ts:31](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L31)
 
 ***
 
@@ -64,4 +64,4 @@
 
 #### Defined in
 
-[types/index.ts:32](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L32)
+[types/index.ts:32](https://github.com/scriptscrypt/solana-agent-kit/blob/6fd144dc25f19c7367b05bc5a764bfde4b616ef9/src/types/index.ts#L32)

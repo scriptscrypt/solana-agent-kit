@@ -1,12 +1,44 @@
 {
+  "$schema": "https://mintlify.com/schema.json",
   "name": "Solana Agent Kit",
   "logo": {
-    "light": "/logo/light.png",
-    "dark": "/logo/dark.png"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
-  "favicon": "/favicon.png",
+  "layout": "sidenav",
+  "favicon": "/favicon.svg",
+  "sidebar": {
+    "items": "border"
+  },
   "colors": {
-    "primary": "#0C8CE9"
+    "primary": "#9945FF",
+    "light": "#14F195",
+    "dark": "#9945FF"
+  },
+  "api": {
+    "auth": {
+      "method": "bearer"
+    }
+  },
+  "background": {
+    "style": "windows"
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/yourusername/solana-agent-kit"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "/quickstart"
+  },
+  "codeBlock": {
+    "mode": "auto"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
   },
   "navigation": [
     {
@@ -17,30 +49,21 @@
       ]
     },
     {
-      "group": "Classes",
+      "group": "API Reference",
       "pages": [
-        "classes/SolanaAgentKit"
-      ]
-    },
-    {
-      "group": "Functions",
-      "pages": [
-        "functions/createSolanaTools"
-      ]
-    },
-    {
-      "group": "Interfaces",
-      "pages": [
-        "interfaces/CollectionDeployment",
-        "interfaces/CollectionOptions",
-        "interfaces/Creator",
-        "interfaces/FetchPriceResponse",
-        "interfaces/JupiterTokenData",
-        "interfaces/LuloAccountDetailsResponse",
-        "interfaces/MintCollectionNFTResponse",
-        "interfaces/PumpFunTokenOptions",
-        "interfaces/PumpfunLaunchResponse"
+        "api/modules",
+        "api/classes",
+        "api/functions",
+        "api/interfaces",
+        "guides/add_your_own_tool",
+        "guides/setup_locally",
+        "guides/test_it_out"
       ]
     }
-  ]
+  ],
+  "footer": {
+    "socials": {
+      "github": "https://github.com/yourusername/solana-agent-kit"
+    }
+  }
 }
