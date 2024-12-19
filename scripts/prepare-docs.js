@@ -1,15 +1,12 @@
 // scripts/prepare-docs.js
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 function processFile(sourcePath, targetPath) {
-  console.log(`Processing file: ${sourcePath} -> ${targetPath}`);
-
-  let content = fs.readFileSync(sourcePath, "utf8");
-  console.log(`Read content from ${sourcePath}`);
-
+  let content = fs.readFileSync(sourcePath, 'utf8');
+  
   const filename = path.basename(sourcePath, path.extname(sourcePath));
-
+  
   const frontmatter = `---
 title: "${filename}"
 description: "Documentation for ${filename}"
@@ -20,105 +17,135 @@ description: "Documentation for ${filename}"
   // Ensure target directory exists
   const targetDir = path.dirname(targetPath);
   if (!fs.existsSync(targetDir)) {
-    console.log(`Creating directory: ${targetDir}`);
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
   fs.writeFileSync(targetPath, frontmatter + content);
-  console.log(`Wrote content to ${targetPath}`);
 }
 
-function processDirectory(sourceDir, targetBaseDir = "api", navPath = "") {
-  console.log(`Processing directory: ${sourceDir}`);
-
-  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
-  const navigationItems = [];
-
-  for (const entry of entries) {
-    const sourcePath = path.join(sourceDir, entry.name);
-
-    if (entry.isDirectory()) {
-      if (!["assets", ".nojekyll", "CNAME"].includes(entry.name)) {
-        console.log(`Found directory: ${entry.name}`);
-        const targetDir = path.join(targetBaseDir, entry.name);
-        const newNavPath = navPath ? `${navPath}/${entry.name}` : entry.name;
-        const subItems = processDirectory(sourcePath, targetDir, newNavPath);
-        if (subItems.length > 0) {
-          navigationItems.push({
-            group: entry.name,
-            pages: subItems,
-          });
-        }
-      }
-    } else if (entry.name.endsWith(".html")) {
-      console.log(`Found HTML file: ${entry.name}`);
-      const targetPath = path.join(
-        targetBaseDir,
-        entry.name.replace(".html", ".mdx")
-      );
-      processFile(sourcePath, targetPath);
-      // Create navigation path without 'api/' prefix
-      const navItem = navPath
-        ? `${navPath}/${entry.name.replace(".html", "")}`
-        : entry.name.replace(".html", "");
-      navigationItems.push(navItem);
+function getNavigationForDirectory(dir) {
+  const pages = [];
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  
+  entries.forEach(entry => {
+    if (entry.isFile() && (entry.name.endsWith('.md') || entry.name.endsWith('.mdx'))) {
+      const baseName = entry.name.replace(/\.(md|mdx)$/, '');
+      const relativePath = path.relative('api', dir);
+      pages.push(relativePath ? `${relativePath}/${baseName}` : baseName);
     }
-  }
-
-  return navigationItems;
+  });
+  
+  return pages;
 }
 
 // Main execution
-console.log("Starting documentation processing...");
+console.log('Starting documentation processing...');
 
 try {
   // Create api directory if it doesn't exist
-  if (!fs.existsSync("api")) {
-    console.log("Creating api directory");
-    fs.mkdirSync("api", { recursive: true });
+  if (!fs.existsSync('api')) {
+    fs.mkdirSync('api', { recursive: true });
   }
 
-  // Process all documentation
+  // Process docs directory
+  const docsPath = './docs';
+  const entries = fs.readdirSync(docsPath, { withFileTypes: true });
+
+  // Process each directory and file
+  entries.forEach(entry => {
+    const sourcePath = path.join(docsPath, entry.name);
+    
+    if (entry.isDirectory() && !['assets', '.nojekyll', 'CNAME'].includes(entry.name)) {
+      // Process directory
+      const targetDir = path.join('api', entry.name);
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+
+      // Process files in the directory
+      const files = fs.readdirSync(sourcePath);
+      files.forEach(file => {
+        if (file.endsWith('.html')) {
+          const sourceFile = path.join(sourcePath, file);
+          const targetFile = path.join(targetDir, file.replace('.html', '.mdx'));
+          processFile(sourceFile, targetFile);
+        }
+      });
+    } else if (entry.name.endsWith('.html')) {
+      // Process root level files
+      const targetFile = path.join('api', entry.name.replace('.html', '.mdx'));
+      processFile(sourcePath, targetFile);
+    }
+  });
+
+  // Generate mint.json with navigation
   const navigation = [
     {
       group: "Getting Started",
-      pages: ["introduction", "quickstart"],
-    },
+      pages: ["introduction", "quickstart"]
+    }
   ];
 
-  const apiNavigation = processDirectory("./docs");
-  if (apiNavigation.length > 0) {
+  // Add Classes section if it exists
+  if (fs.existsSync('api/classes')) {
+    const classesPages = getNavigationForDirectory('api/classes');
+    if (classesPages.length > 0) {
+      navigation.push({
+        group: "Classes",
+        pages: classesPages
+      });
+    }
+  }
+
+  // Add Functions section if it exists
+  if (fs.existsSync('api/functions')) {
+    const functionsPages = getNavigationForDirectory('api/functions');
+    if (functionsPages.length > 0) {
+      navigation.push({
+        group: "Functions",
+        pages: functionsPages
+      });
+    }
+  }
+
+  // Add Interfaces section if it exists
+  if (fs.existsSync('api/interfaces')) {
+    const interfacesPages = getNavigationForDirectory('api/interfaces');
+    if (interfacesPages.length > 0) {
+      navigation.push({
+        group: "Interfaces",
+        pages: interfacesPages
+      });
+    }
+  }
+
+  // Add root level API docs if they exist
+  const rootApiPages = getNavigationForDirectory('api')
+    .filter(page => !page.includes('/'));
+  if (rootApiPages.length > 0) {
     navigation.push({
       group: "API Reference",
-      pages: apiNavigation.map((item) => {
-        // Remove 'api/' from the beginning of paths
-        return item.startsWith("api/") ? item.substring(4) : item;
-      }),
+      pages: rootApiPages
     });
   }
 
-  // Generate mint.json
   const mintConfig = {
     name: "Solana Agent Kit",
     logo: {
       light: "/logo/light.png",
-      dark: "/logo/dark.png",
+      dark: "/logo/dark.png"
     },
     favicon: "/favicon.png",
     colors: {
-      primary: "#0C8CE9",
+      primary: "#0C8CE9"
     },
-    navigation,
+    navigation
   };
 
-  console.log(
-    "Writing mint.json with configuration:",
-    JSON.stringify(mintConfig, null, 2)
-  );
-  fs.writeFileSync("mint.json", JSON.stringify(mintConfig, null, 2));
+  fs.writeFileSync('mint.json', JSON.stringify(mintConfig, null, 2));
+  console.log('Generated mint.json with navigation:', JSON.stringify(navigation, null, 2));
 
-  console.log("Documentation processing complete!");
 } catch (error) {
-  console.error("Error processing documentation:", error);
+  console.error('Error processing documentation:', error);
   process.exit(1);
 }

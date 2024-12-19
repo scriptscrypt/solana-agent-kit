@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/index.ts:4](https://github.com/scriptscrypt/solana-agent-kit/blob/68d8ad613e2c45cb6871fb034691a1d6b6c40c9f/src/types/index.ts#L4)
+[types/index.ts:4](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L4)
 
 ***
 
@@ -24,4 +24,4 @@
 
 #### Defined in
 
-[types/index.ts:5](https://github.com/scriptscrypt/solana-agent-kit/blob/68d8ad613e2c45cb6871fb034691a1d6b6c40c9f/src/types/index.ts#L5)
+[types/index.ts:5](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/types/index.ts#L5)

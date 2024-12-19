@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[langchain/index.ts:764](https://github.com/scriptscrypt/solana-agent-kit/blob/68d8ad613e2c45cb6871fb034691a1d6b6c40c9f/src/langchain/index.ts#L764)
+[langchain/index.ts:764](https://github.com/scriptscrypt/solana-agent-kit/blob/01750ced712a9447e925cf1a3bd3066ce1be905f/src/langchain/index.ts#L764)
