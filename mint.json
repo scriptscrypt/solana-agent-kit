@@ -6,9 +6,13 @@
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#4da6ff",
-    "light": "#66b3ff",
-    "dark": "#3399ff"
+    "primary": "#0C8CE9",
+    "light": "#4DA8FF",
+    "dark": "#0761D1",
+    "anchors": {
+      "from": "#0C8CE9",
+      "to": "#4DA8FF"
+    }
   },
   "topbarLinks": [
     {
@@ -20,6 +24,12 @@
     "name": "Get Started",
     "url": "/quickstart"
   },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api"
+    }
+  ],
   "navigation": [
     {
       "group": "Getting Started",
@@ -28,14 +38,26 @@
     {
       "group": "API Reference",
       "pages": [
-        "api/index",
-        "api/classes/index",
-        "api/interfaces/index",
-        "api/modules"
+        "api/modules",
+        {
+          "group": "Classes",
+          "pages": ["api/classes/SolanaAgent", "api/classes/TokenManager"]
+        },
+        {
+          "group": "Interfaces",
+          "pages": ["api/interfaces/index"]
+        }
       ]
     }
   ],
   "footerSocials": {
     "github": "https://github.com/scriptscrypt/solana-agent-kit"
+  },
+  "modeToggle": {
+    "default": "dark"
+  },
+  "feedback": {
+    "suggestEdit": true,
+    "raiseIssue": true
   }
 }

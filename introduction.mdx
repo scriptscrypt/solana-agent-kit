@@ -1,21 +1,9 @@
 ---
 title: 'Introduction'
-description: 'Welcome to the Solana Agent Kit documentation'
+description: 'Learn how to use Solana Agent Kit in your projects'
 ---
 
-# Solana Agent Kit
-
-Solana Agent Kit is a powerful toolkit for interacting with the Solana blockchain using LangChain. It provides a seamless integration between language models and Solana blockchain operations.
-
-## Features
-
-- **LangChain Integration**: Built-in support for LangChain's powerful AI capabilities
-- **Solana Operations**: Easy-to-use interfaces for common Solana blockchain operations
-- **Token Management**: Comprehensive tools for SPL token operations
-- **Metadata Handling**: Built-in support for Metaplex metadata standards
-- **Name Service Integration**: Bonfida SPL name service support
-
-## Getting Started
+# Getting Started
 
 To start using Solana Agent Kit in your project:
 
@@ -23,17 +11,42 @@ To start using Solana Agent Kit in your project:
 npm install solana-agent-kit
 ```
 
-## Quick Example
+# Quick Example
 
 ```typescript
 import { SolanaAgent } from 'solana-agent-kit';
 
+// Initialize the agent with your configuration
 const agent = new SolanaAgent({
-    // your configuration here
+  network: 'devnet',  // or 'mainnet-beta'
+  rpcEndpoint: 'YOUR_RPC_ENDPOINT',
+  commitment: 'confirmed'
 });
 
-// Your first Solana operation
+// Example: Get an account's SOL balance
 const balance = await agent.getBalance('YOUR_ADDRESS');
+console.log(`Account balance: ${balance} SOL`);
+
+// Example: Create a new SPL token
+const tokenMint = await agent.createToken({
+  name: "My Token",
+  symbol: "MTKN",
+  decimals: 9,
+  initialSupply: 1000000
+});
+
+// Example: Query NFT metadata
+const metadata = await agent.getNFTMetadata('NFT_MINT_ADDRESS');
 ```
 
-For more detailed examples and use cases, check out our [Quickstart Guide](/quickstart).
+# Features
+
+- **Blockchain Operations**: Easy-to-use interfaces for common Solana operations
+- **Token Management**: Comprehensive tools for SPL token operations
+- **NFT Support**: Built-in support for NFT creation and management
+- **Name Service**: Integration with Solana name service
+- **LangChain Integration**: Seamless integration with LangChain's AI capabilities
+
+# Next Steps
+
+Check out our [Quickstart Guide](/quickstart) for detailed examples and usage instructions.
