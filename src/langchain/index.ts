@@ -15,6 +15,7 @@ import {
   CreateSingleOptions,
   StoreInitOptions,
 } from "@3land/listings-sdk/dist/types/implementation/implementationTypes";
+import { METEORA_DYNAMIC_FEE_DENOMINATOR, TOKENS } from "../constants";
 
 export class SolanaBalanceTool extends Tool {
   name = "solana_balance";
@@ -1298,6 +1299,156 @@ export class SolanaClosePosition extends Tool {
       return JSON.stringify({
         status: "success",
         message: "Liquidity position closed successfully.",
+        transaction: txId,
+      });
+    } catch (error: any) {
+      return JSON.stringify({
+        status: "error",
+        message: error.message,
+        code: error.code || "UNKNOWN_ERROR",
+      });
+    }
+  }
+}
+
+export class SolanaMeteoraCreateDynamicPool extends Tool {
+  name = "meteora_create_dynamic_pool";
+  description = `Create a Meteora Dynamic Pool. This function adds liquidity with a constant-product formula.
+  
+  Inputs (JSON string):
+  - tokenAMint: string, token A mint (required).
+  - tokenBMint: string, token B mint (required).
+  - tokenAAmount: number, token A amount including decimals, e.g., 1000000000 (required).
+  - tokenBAmount: number, token B amount including decimals, e.g., 1000000000 (required).
+  - tradeFee: number, trade fee in percentage, e.g., 0.5 (required).
+  - activationType: number, pool start trading time indicator, 0 is slot and 1 is timestamp, default is 1 for timestamp (optional).
+  - activationPoint: number, pool start trading slot / timestamp, default is null means pool can start trading immediately (optional).
+  - hasAlphaVault: boolean, whether the pool supports alpha vault, default is false (optional).
+  `;
+
+  constructor(private solanaKit: SolanaAgentKit) {
+    super();
+  }
+
+  async _call(input: string): Promise<string> {
+    try {
+      interface CreateMeteoraDynamicAmmPoolInput {
+        tokenAMint: string;
+        tokenBMint: string;
+        tokenAAmount: number;
+        tokenBAmount: number;
+        tradeFee: number;
+        activationType?: number;
+        activationPoint?: number;
+        hasAlphaVault?: boolean;
+      }
+      const inputFormat: CreateMeteoraDynamicAmmPoolInput = JSON.parse(input);
+
+      console.log(inputFormat);
+
+      const tokenAMint = new PublicKey(inputFormat.tokenAMint);
+      const tokenBMint = new PublicKey(inputFormat.tokenBMint);
+      const tokenAAmount = new BN(inputFormat.tokenAAmount.toString());
+      const tokenBAmount = new BN(inputFormat.tokenBAmount.toString());
+      const tradeFeeNumerator = new BN(inputFormat.tradeFee.toString())
+        .mul(METEORA_DYNAMIC_FEE_DENOMINATOR)
+        .toNumber();
+      const activationType = inputFormat.activationType ?? 1;
+      const activationPoint = inputFormat.activationPoint
+        ? new BN(inputFormat.activationPoint)
+        : null;
+      const hasAlphaVault = inputFormat.hasAlphaVault ?? false;
+
+      const txId = await this.solanaKit.meteoraCreateDynamicPool(
+        tokenAMint,
+        tokenBMint,
+        tokenAAmount,
+        tokenBAmount,
+        tradeFeeNumerator,
+        activationPoint,
+        hasAlphaVault,
+        activationType,
+      );
+
+      return JSON.stringify({
+        status: "success",
+        message: "Meteora Dynamic pool created successfully.",
+        transaction: txId,
+      });
+    } catch (error: any) {
+      return JSON.stringify({
+        status: "error",
+        message: error.message,
+        code: error.code || "UNKNOWN_ERROR",
+      });
+    }
+  }
+}
+
+export class SolanaMeteoraCreateDlmmPool extends Tool {
+  name = "meteora_create_dlmm_pool";
+  description = `Create a Meteora DLMM Pool. This function doesn't add liquidity.
+  
+  Inputs (JSON string):
+  - tokenAMint: string, token A mint (required).
+  - tokenBMint: string, token B mint (required).
+  - binStep: number, pool bin step, e.g., 20 (required).
+  - initialPrice: number, pool initial price, e.g., 0.25 (required).
+  - fee: number, trade fee in percentage, e.g. 0.2 (required).
+  - priceRoundingUp: boolean, whether the initial price should be rounded up or not, default is true (optional).
+  - activationType: number, pool start trading time indicator. 0 is slot and 1 is timestamp, default is 1 for timestamp (optional).
+  - activationPoint: number, pool start trading slot / timestamp, default is null means pool can start trading immediately (optional).
+  - hasAlphaVault: boolean, whether the pool supports alpha vault, default is false (optional).
+  `;
+
+  constructor(private solanaKit: SolanaAgentKit) {
+    super();
+  }
+
+  async _call(input: string): Promise<string> {
+    try {
+      interface CreateMeteoraDlmmPoolInput {
+        tokenAMint: string;
+        tokenBMint: string;
+        binStep: number;
+        initialPrice: number;
+        fee: number;
+        priceRoundingUp?: boolean;
+        activationType?: number;
+        activationPoint?: number;
+        hasAlphaVault?: boolean;
+      }
+      const inputFormat: CreateMeteoraDlmmPoolInput = JSON.parse(input);
+
+      console.log(inputFormat);
+
+      const tokenAMint = new PublicKey(inputFormat.tokenAMint);
+      const tokenBMint = new PublicKey(inputFormat.tokenBMint);
+      const binStep = inputFormat.binStep;
+      const initialPrice = inputFormat.initialPrice;
+      const feeBps = inputFormat.fee * 10000;
+      const priceRoundingUp = inputFormat.priceRoundingUp ?? true;
+      const activationType = inputFormat.activationType ?? 1;
+      const activationPoint = inputFormat.activationPoint
+        ? new BN(inputFormat.activationPoint)
+        : undefined;
+      const hasAlphaVault = inputFormat.hasAlphaVault ?? false;
+
+      const txId = await this.solanaKit.meteoraCreateDlmmPool(
+        tokenAMint,
+        tokenBMint,
+        binStep,
+        initialPrice,
+        priceRoundingUp,
+        feeBps,
+        activationType,
+        hasAlphaVault,
+        activationPoint,
+      );
+
+      return JSON.stringify({
+        status: "success",
+        message: "Meteora DLMM pool created successfully.",
         transaction: txId,
       });
     } catch (error: any) {
@@ -2720,6 +2871,8 @@ export function createSolanaTools(solanaKit: SolanaAgentKit) {
     new SolanaBatchOrderTool(solanaKit),
     new SolanaCancelAllOrdersTool(solanaKit),
     new SolanaWithdrawAllTool(solanaKit),
+    new SolanaMeteoraCreateDynamicPool(solanaKit),
+    new SolanaMeteoraCreateDlmmPool(solanaKit),
     new SolanaClosePosition(solanaKit),
     new SolanaOrcaCreateCLMM(solanaKit),
     new SolanaOrcaCreateSingleSideLiquidityPool(solanaKit),
