@@ -1,8 +1,10 @@
 import AmmImpl from "@mercurial-finance/dynamic-amm-sdk";
-import { SolanaAgentKit } from "../agent";
+
 import BN from "bn.js";
-import { PublicKey, sendAndConfirmTransaction } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { CustomizableParams } from "@mercurial-finance/dynamic-amm-sdk/dist/cjs/src/amm/types";
+import { sendTx } from "../utils/send_tx";
+import { SolanaAgentKit } from "../agent";
 
 /**
  * Create Meteora Dynamic AMM pool
@@ -38,14 +40,9 @@ export async function createMeteoraDynamicAMMPool(
       customizableParams,
     );
 
-  const initPoolTxHash = await sendAndConfirmTransaction(
-    agent.connection,
-    initPoolTx,
-    [agent.wallet],
-  ).catch((err) => {
-    console.error(err);
-    throw err;
-  });
+  const initPoolTxHash = await sendTx(agent, initPoolTx.instructions, [
+    agent.wallet,
+  ]);
 
   return initPoolTxHash;
 }
